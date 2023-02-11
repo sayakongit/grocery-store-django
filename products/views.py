@@ -8,7 +8,13 @@ from rest_framework.permissions import IsAuthenticated
 
 class ProductView(APIView):
     def get(self, request):
-        query_set = Product.objects.all()
+        slug = self.request.query_params.get('category')
+        print(slug)
+        if slug:
+            query_set = Product.objects.filter(category__slug = slug)
+        else:
+            query_set = Product.objects.all()
+            
         serializer = ProductSerializer(query_set, many = True)
         return Response(serializer.data)
     
