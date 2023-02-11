@@ -16,7 +16,11 @@ class ProductView(APIView):
             query_set = Product.objects.all()
             
         serializer = ProductSerializer(query_set, many = True)
-        return Response(serializer.data)
+        response = {
+            'data': serializer.data,
+            'count': len(serializer.data)
+        }
+        return Response(response)
     
 class ExampleView(APIView):
     permission_classes = [IsAuthenticated]

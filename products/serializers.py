@@ -22,6 +22,7 @@ class ColorVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = ColorVariant
         fields = '__all__'
+
 class ProductSerializer(serializers.ModelSerializer):
     quantity_type = QuantityVariantSerializer()
     color_type = ColorVariantSerializer()
