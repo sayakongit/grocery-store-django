@@ -30,9 +30,25 @@ class CartView(APIView):
         return Response({'message': 'item added to cart'})
     
     def delete(self, request):
-        pass
+        user = request.user
+        data = request.data
+        
+        cart_item = CartItem.objects.get(id = data.get('id'))
+        cart_item.delete()
+        #TODO: Update cart total_price after deletion
+        cart = Cart.objects.filter(user=user, order=False).first()
+        queryset = CartItem.objects.filter(cart=cart)
+        serializer = CartItemSerializer(queryset, many=True)
+        
+        return Response(serializer.data)
     
-    def update(self, request):
-        pass
+    def put(self, request):
+        data = request.data
+        cart_item = CartItem.objects.get(id = data.get('id'))
+        quantity = data.get('quantity')
+        cart_item.quantity += quantity
+        cart_item.save()
+        serializer = CartItemSerializer(cart_item)
+        return Response(serializer.data)
     
 
