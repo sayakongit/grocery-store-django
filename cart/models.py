@@ -7,7 +7,7 @@ from django.dispatch import receiver
 # Create your models here.
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order = models.BooleanField()
+    ordered = models.BooleanField(default=False)
     total_price = models.FloatField(default=0)
     
     def __str__(self):
@@ -36,3 +36,15 @@ def _post_save_price_handler(sender, **kwargs):
     cart.total_price += cart_items.price
     cart.save()
 
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0)
+    
+    order_id = models.CharField(max_length=100, blank=True)
+    payment_id = models.CharField(max_length=100, blank=True)
+    payment_signature = models.CharField(max_length=100, blank=True)
+    
+class OrderItems(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)

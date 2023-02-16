@@ -5,6 +5,7 @@ from django.utils.text import slugify
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=200, blank=True)
+    category_image = models.ImageField(upload_to='static/category', blank=True)
     
     class Meta:
         verbose_name = ("Category")

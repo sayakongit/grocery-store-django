@@ -48,6 +48,7 @@ class CartView(APIView):
         quantity = data.get('quantity')
         cart_item.quantity += quantity
         cart_item.save()
+        #FIXME: Cart total_price increasing after every save()
         serializer = CartItemSerializer(cart_item)
         return Response(serializer.data)
     
