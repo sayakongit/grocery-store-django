@@ -53,3 +53,12 @@ class CartView(APIView):
         return Response(serializer.data)
     
 
+class OrderView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        print(request.user)
+        queryset = Order.objects.filter(user = request.user)
+        serializer = OrderSerializer(queryset, many = True)
+        return Response(serializer.data)
+    
+
